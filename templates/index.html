@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockafairy</title>
+	<link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Rockafairy!</h1>
+
+        <div class="mission-statement"> </! Mission statement container>
+            <h2>Our Mission:</h2>
+            <p>"...to provide anyone who desires the necessary means for creative expression!"</p>
+            <p>Rockafairy is a public benefit non-profit which serves the Rogue Valley by offering creative resources - a library of musical equipment and art supplies, artistic collaboration space, private rehearsal space, mentoring, lessons, and so much more!</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <div class="buttons">
+            <button id="checkin-button" class = "button checkin-button primary-button">Check In</button>  </! Made primary >
+            <a href="{{ url_for('signup') }}" class="button signup-button secondary-button">New Member</a> </! Made secondary >
+
+        </div>
+
+        <form id="checkin-form" action="{{ url_for('checkin') }}" method="post" style="display: none;">
+            <input type="text" name="identifier" id="identifier" placeholder="Email or Phone Number" required>
+            <button type="submit" class="button">Check In</button>
+        </form>
+    </div>
+     <script>
+        document.getElementById('checkin-button').addEventListener('click', function() {
+            document.getElementById('checkin-form').style.display = 'block';
+            document.getElementById('checkin-button').style.display = 'none';
+            document.getElementById('signup-button').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

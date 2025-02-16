@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockafairy - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ member.name }}!</h1>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <i class="fas fa-gem stat-icon"></i>
+                <span class="stat-value" id="gem-count">{{ member.gems }}</span>
+                <span class="stat-label">Gems</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-fire stat-icon"></i>
+                <span class="stat-value" id="streak-count">{{ member.streak }}</span>
+                <span class="stat-label">Streak</span>
+            </div>
+        </div>
+
+        {% if gems_earned > 0 %}
+        <div id="gem-animation">
+            {% for _ in range(gems_earned) %}
+                <i class="fas fa-gem gem"></i>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if is_admin %}
+            <a href="{{ url_for('admin_login') }}" class="button admin-button">Admin</a>
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        setTimeout(function() {
+            window.location.href = "{{ url_for('index') }}";
+        }, 5000); // 5000 milliseconds = 5 seconds
+    </script>
+</body>
+</html>

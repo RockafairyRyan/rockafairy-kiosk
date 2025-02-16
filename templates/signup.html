@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockafairy - Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>New Member</h1>
+        <a href="{{ url_for('index') }}" class="button back-button">Back</a> </! Add Back Button >
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('signup') }}" method="post">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="text" name="phone" id="phone" placeholder="Phone Number" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <label class="checkbox-label">
+                <input type="checkbox" name="email_opt_in"> Sign up for email announcements
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="sms_opt_in"> Sign up for text announcements
+            </label>
+            <button type="submit" class="button">Sign Up</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('#phone').mask('(000) 000-0000');
+        });
+    </script>
+</body>
+</html>

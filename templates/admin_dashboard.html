@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+	<link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Dashboard - Member List</h2>
+        <p><a href="{{ url_for('admin_logout') }}" class="button">Admin Logout</a></p>
+        <a href="{{ url_for('index') }}" class="button back-button">Return to Home</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Email Opt-in</th>
+                    <th>SMS Opt-in</th>
+                    <th>Last Login</th>
+                    <th>Streak</th>
+                    <th>Gems</th>
+                    <th>Actions</th>  </! Add Actions column >
+                    </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td>{{ member.id }}</td>
+                    <td>{{ member.name }}</td>
+                    <td>{{ member.phone }}</td>
+                    <td>{{ member.email }}</td>
+                    <td>{{ member.email_opt_in }}</td>
+                    <td>{{ member.sms_opt_in }}</td>
+                    <td>{{ member.last_login }}</td>
+                    <td>{{ member.streak }}</td>
+                    <td>{{ member.gems }}</td>
+                    <td>  </! Add Edit button >
+                        <a href="{{ url_for('edit_gems', member_id=member.id) }}" class="button edit-button">Edit Gems</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Sign-in History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Member Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for signin in signins %}
+                <tr>
+                    <td>{{ signin.timestamp }}</td>
+                    <td>{{ signin.name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
