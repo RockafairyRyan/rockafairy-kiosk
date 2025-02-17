@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+</head>
+<<body>
+    {% block content %}{% endblock %}
+
+    </! Modal Structure (Hidden by default) ->
+    <div id="flash-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="modal-message"></p>
+        </div>
+    </div>
+     </! Confetti Container ->
+     <div class="confetti-container"></div>
+
+    <script>
+$(document).ready(function() {
+    const modal = $('#flash-modal');
+    const message = $('#modal-message');
+    const closeButton = $('.close-button');
+    let confettiTriggered = false; // Flag to prevent multiple confetti
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, msg in messages %}
+                // Display message in modal (for ALL categories)
+                message.text('{{ msg | safe }}');
+                modal.addClass(category);
+                modal.show();
+
+                {% if category == 'confetti' %}
+                    if (!confettiTriggered) {
+                        confettiTriggered = true;
+                        const confettiContainer = $('.confetti-container');
+                        const confettiCount = 100;
+                        const colors = ['#a50a50', '#f06292', '#6a1b9a', '#ff9e80', '#4dd0e1', '#ffd600', '#00b0ff', '#00e676'];
+
+                        for (let i = 0; i < confettiCount; i++) {
+                            const confetti = $('<div>').addClass('confetti');
+                            confetti.css({
+                                'left': `${Math.random() * 100}%`,
+                                'animation-delay': `${Math.random() * 4}s`,
+                                'background-color': colors[Math.floor(Math.random() * colors.length)],
+                                'width': `${Math.random() * 10 + 5}px`,
+                                'height': `${Math.random() * 10 + 5}px`,
+                                'transform': `rotate(${Math.random() * 360}deg)`
+                            });
+                            confettiContainer.append(confetti);
+                        }
+                    }
+                {% endif %}
+            {% endfor %}
+
+            // Autohide after 5 seconds (optional) - Apply to ALL messages
+            setTimeout(function() {
+                modal.hide();
+                modal.removeClass('success error confetti'); // Clear ALL classes
+            }, 5000);
+
+        {% endif %}
+    {% endwith %}
+
+    // Close button functionality
+    closeButton.click(function() {
+        modal.hide();
+        modal.removeClass('success error confetti'); // Clear ALL classes
+
+    });
+
+    // Close modal if user clicks outside of it
+    $(window).click(function(event) {
+        if (event.target == modal[0]) {
+            modal.hide();
+             modal.removeClass('success error confetti'); // Clean up classes
+        }
+    });
+    
+});
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,3 +1,8 @@
+{% extends 'base.html' %}  </! Inherit from base.html >
+
+{% block title %}Rockafairy{% endblock %}  </! Override title >
+
+{% block content %}  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +21,7 @@
         <div class="stats-container">
             <div class="stat-item">
                 <i class="fas fa-gem stat-icon"></i>
-                <span class="stat-value" id="gem-count">{{ member.gems }}</span>
+                <span class="stat-value" id="ruby-count">{{ member.rubies }}</span>
                 <span class="stat-label">Rubies</span>
             </div>
             <div class="stat-item">
@@ -26,16 +31,18 @@
             </div>
         </div>
 
-        {% if gems_earned > 0 %}
-        <div id="gem-animation">
-            {% for _ in range(gems_earned) %}
-                <i class="fas fa-gem gem"></i>
+        {% if rubies_earned > 0 %}
+        <div id="ruby-animation">
+            {% for _ in range(rubies_earned) %}
+                <i class="fas fa-gem ruby"></i>
             {% endfor %}
         </div>
         {% endif %}
         {% if is_admin %}
             <a href="{{ url_for('admin_login') }}" class="button admin-button">Admin</a>
         {% endif %}
+		<a href="{{ url_for('rewards') }}" class = "button">Rewards</a>
+
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script>
@@ -45,3 +52,4 @@
     </script>
 </body>
 </html>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}  </! Inherit from base.html >
+
+{% block title %}Rockafairy{% endblock %}  </! Override title >
+
+{% block content %}  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Rewards</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>My Rewards</h1>
+        <a href="{{ url_for('home') }}" class="button back-button">Back</a>
+
+        {% if redemptions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reward</th>
+                        <th>Cost (Rubies)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for redemption in redemptions %}
+                    <tr>
+                        <td>{{ redemption.timestamp }}</td>
+                        <td>{{ redemption.name }}
+                          {% if redemption.description %}
+                          - {{redemption.description}}
+                          {% endif %}
+                        </td>
+                        <td>{{ redemption.ruby_cost }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You haven't redeemed any rewards yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

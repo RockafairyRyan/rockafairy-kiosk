@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Rewards{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewards</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Rewards</h2>
+        <a href="{{ url_for('index') }}" class="button back-button">Back</a>
+
+        {% if member %}
+            <p class="current-rubies">{{ member.rubies }}</p>
+        {% endif %}
+		
+		<i class="fas fa-gem stat-icon"></i>
+        <div class="rewards-list">
+            {% if rewards %}
+                {% for reward in rewards %}
+                    <div class="reward-item">
+                        {% if reward.image_path %}
+                          <img src="{{ url_for('static', filename=reward.image_path) }}" alt="{{ reward.name }}" class = "reward-image">
+                        {% endif %}
+                        <h2>{{ reward.name }}</h2>
+                        {% if reward.description %}
+                            <p>{{ reward.description }}</p>
+                        {% endif %}
+                        <p>Cost: {{ reward.ruby_cost }} Rubies</p>
+                        {% if reward.quantity_available is not none %}
+                            <p>Available: {{ reward.quantity_available }}</p>
+                        {% endif %}
+                        <form action="{{ url_for('redeem_reward', reward_id=reward.id) }}" method="post">
+                            <button type="submit" class="button" {% if not member or member.rubies < reward.ruby_cost %}disabled{% endif %}>
+                                {% if not member %}
+                                    Check in to Redeem
+                                {% elif member.rubies < reward.ruby_cost %}
+                                    Not Enough Rubies
+                                {% else %}
+                                    Redeem
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No rewards are currently available.</p>
+            {% endif %}
+        </div>
+
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('rewards', page=page-1) }}" class="button edit-button page-button">Previous</a>
+            {% endif %}
+            <span>Page {{ page }} of {{ total_pages }}</span>
+            {% if page < total_pages %}
+                <a href="{{ url_for('rewards', page=page+1) }}" class="button edit-button page-button">Next</a>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
+{% endblock %}

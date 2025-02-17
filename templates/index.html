@@ -1,3 +1,8 @@
+{% extends 'base.html' %}  </! Inherit from base.html >
+
+{% block title %}Rockafairy{% endblock %}  </! Override title >
+
+{% block content %} 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,12 +16,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container"> 
         <h1>Rockafairy</h1>
 
         <div class="mission-statement">
-            <h2>We enable creative expression!</h2>
-            <p>Welcome to Rockafairy! We're a team of volunteers that offer artists free access to equipment, studio space, education, and more here at our nonprofit creative resource center. Feel free to make music and art! <b>Explore! Experiment! Have fun! </b> </p>
+            <b><h2>We enable creative expression!</h2></b>
+            <p>Rockafairy gives our community free access to equipment, studio space, education, and more, right here at our nonprofit creative resource center. </p>
+			<h2><b>Explore! Experiment! Enjoy!</b></h2> 
 			<p>Fuel your own creativity and support local artists by becoming a Rockafairy member! <b>Rockafairy membership is always free</b>, and it lets you stay informed about events, earn daily rewards for visiting, and connect with fellow creatives.
         </div>
 
@@ -45,3 +51,4 @@
     </script>
 </body>
 </html>
+{% endblock %}

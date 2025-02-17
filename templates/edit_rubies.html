@@ -1,0 +1,135 @@
+{% extends 'base.html' %}  </! Inherit from base.html >
+
+{% block title %}Rockafairy{% endblock %}  </! Override title >
+
+{% block content %}  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Rubies</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">	
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ member.name }}</h2>
+        <p class = "current-rubies">Current Rubies: {{ member.rubies }}</p>
+		<i class="fas fa-gem stat-icon"></i>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+         </! Ruby Animation (if rubies were changed)>
+        {% if session.get('rubies_earned') and session.get('rubies_earned') > 0 %}
+        <div id="ruby-animation">
+            {% for _ in range(session.get('rubies_earned')) %}
+                <i class="fas fa-gem ruby"></i>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+        <form action="{{ url_for('edit_rubies', member_id=member.id) }}" method="post">
+           
+
+            <div class="form-group">
+                <label for="ruby_change">Change:</label>
+                <input type="number" id="ruby_change" name="ruby_change" value="1" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reason">Reason:</label>
+                <textarea id="reason" name="reason" rows="4" required></textarea>
+            </div>
+            <input type="hidden" id="sign" name="sign" value="1">
+			<div class="toggle-container">
+                <label class="switch">
+                    <input type="checkbox" id="add_subtract_toggle" name="add_subtract" checked>
+                    <span class="slider round"></span>
+                </label>
+                <span id="toggle-label">Add</span>
+				</div>
+            </! Button Group for Alignment ->
+            <div class="button-group">				
+                <button type="submit" class="button">Update Rubies</button>
+                <a href="{{ url_for('admin_dashboard') }}" class="button secondary-button">Cancel</a>
+            </div>
+        </form>
+
+        <h2>Recent Ruby Adjustments</h2>
+        {% if recent_adjustments %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Admin</th>
+                        <th>Amount</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for adjustment in recent_adjustments %}
+                    <tr>
+                        <td>{{ adjustment.timestamp }}</td>
+                         <td>{{ adjustment.admin_user }}</td>
+                        <td>{{ adjustment.amount }}</td>
+                        <td>{{ adjustment.reason }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No recent ruby adjustments.</p>
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Toggle button functionality
+            $('#add_subtract_toggle').change(function() {
+                if (this.checked) {
+                    $('#toggle-label').text('Add');
+                    $('#sign').val('1');  // Set hidden input to 1 (positive)
+                } else {
+                    $('#toggle-label').text('Subtract');
+                    $('#sign').val('-1'); // Set hidden input to -1 (negative)
+                }
+            });
+
+            // Prevent non-numeric and negative input, and leading zeros
+            $('#ruby_change').on('input', function() {
+                let value = this.value;
+                // Remove non-digits
+                value = value.replace(/\D/g, '');
+                // Remove leading zeros, but allow a single zero
+                value = value.replace(/^0+(?!$)/, '');
+                // Ensure it's at least 1
+                value = value === '' ? '' : Math.max(1, parseInt(value, 10));
+                this.value = value;
+            });
+             // Prevent pasting invalid values
+            $('#ruby_change').on('paste', function(e) {
+                const pastedData = e.originalEvent.clipboardData.getData('text');
+                if (/\D/.test(pastedData)) { //if the pasted data has a Non-Digit
+                    e.preventDefault(); // Prevent the paste
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
+{% endblock %}

@@ -1,3 +1,8 @@
+{% extends 'base.html' %}  </! Inherit from base.html >
+
+{% block title %}Rockafairy{% endblock %}  </! Override title >
+
+{% block content %}  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +19,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>New Member</h1>
-
+        <h2>New Member</h2>
+		<h3>Becoming a Rockafairy member is 100% free, shows your support for our mission to enable creativity for all, and unlocks even more resources! As a member of our community, you'll earn rubies that can be exchanged for event tickets, special experiences and more. Build up a streak to maximize the rubies you earn each time you visit Rockafairy!</h3>
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             <ul class="flash-messages">
@@ -27,7 +32,9 @@
         {% endwith %}
         <form action="{{ url_for('signup') }}" method="post">
             <input type="text" class="narrow-input" name="name" placeholder="Full Name" required>
+			<br>
             <input type="text" class="narrow-input" name="phone" id="phone" placeholder="Phone Number" required>
+			<br>
             <input type="email" class="narrow-input" name="email" placeholder="Email Address" required>
             <label class="checkbox-label">
                 <input type="checkbox" name="email_opt_in"> Sign up for email announcements
@@ -46,3 +53,4 @@
     </script>
 </body>
 </html>
+{% endblock %}
