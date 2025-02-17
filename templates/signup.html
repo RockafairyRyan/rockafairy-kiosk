@@ -7,13 +7,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+	
 
 </head>
 <body>
     <div class="container">
         <h1>New Member</h1>
-        <a href="{{ url_for('index') }}" class="button back-button">Back</a> </! Add Back Button >
+
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             <ul class="flash-messages">
@@ -24,15 +26,16 @@
           {% endif %}
         {% endwith %}
         <form action="{{ url_for('signup') }}" method="post">
-            <input type="text" name="name" placeholder="Full Name" required>
-            <input type="text" name="phone" id="phone" placeholder="Phone Number" required>
-            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" class="narrow-input" name="name" placeholder="Full Name" required>
+            <input type="text" class="narrow-input" name="phone" id="phone" placeholder="Phone Number" required>
+            <input type="email" class="narrow-input" name="email" placeholder="Email Address" required>
             <label class="checkbox-label">
                 <input type="checkbox" name="email_opt_in"> Sign up for email announcements
             </label>
             <label class="checkbox-label">
                 <input type="checkbox" name="sms_opt_in"> Sign up for text announcements
             </label>
+			<a href="{{ url_for('index') }}" class="button back-button secondary-button">Back</a> 
             <button type="submit" class="button">Sign Up</button>
         </form>
     </div>

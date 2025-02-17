@@ -6,22 +6,23 @@
     <title>Rockafairy - Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome, {{ member.name }}!</h1>
+        <h2>Welcome, {{ first_name }}!</h2>
 
         <div class="stats-container">
             <div class="stat-item">
                 <i class="fas fa-gem stat-icon"></i>
                 <span class="stat-value" id="gem-count">{{ member.gems }}</span>
-                <span class="stat-label">Gems</span>
+                <span class="stat-label">Rubies</span>
             </div>
             <div class="stat-item">
                 <i class="fas fa-fire stat-icon"></i>
                 <span class="stat-value" id="streak-count">{{ member.streak }}</span>
-                <span class="stat-label">Streak</span>
+                <span class="stat-label">day streak</span>
             </div>
         </div>
 

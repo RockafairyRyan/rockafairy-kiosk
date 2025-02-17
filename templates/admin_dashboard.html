@@ -4,12 +4,22 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 	<link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h2>Admin Dashboard - Member List</h2>
-        <p><a href="{{ url_for('admin_logout') }}" class="button">Admin Logout</a></p>
-        <a href="{{ url_for('index') }}" class="button back-button">Return to Home</a>
+	
+		
+		
+        <h2>Admin Dashboard</h2>
+		<div class="admin-stats">
+            <h3>Statistics</h3>
+            <p>New Members (Last Month): {{ new_members_last_month }}</p>
+            <p>Sign-Ins (Last Month): {{ signins_last_month }}</p>
+            <p>Sign-Ins (Last 24 Hours): {{ signins_last_24_hours }}</p>
+        </div>
+        <p><a href="{{ url_for('admin_logout') }}" class="button">Logout</a></p>
+		<h2>Member List</h2>
 
         <table>
             <thead>
@@ -55,7 +65,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for signin in signins %}
+                {% for signin in signins %}  </! This loop now displays only the current page's sign-ins >
                 <tr>
                     <td>{{ signin.timestamp }}</td>
                     <td>{{ signin.name }}</td>
@@ -63,6 +73,18 @@
                 {% endfor %}
             </tbody>
         </table>
+
+         </! Pagination Controls ->
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('admin_dashboard', page=page-1) }}" class="page-button">Previous</a>
+            {% endif %}
+            <span>Page {{ page }} of {{ total_pages }}</span>
+            {% if page < total_pages %}
+                <a href="{{ url_for('admin_dashboard', page=page+1) }}" class="page-button">Next</a>
+            {% endif %}
+        </div>
+
 
     </div>
 </body>

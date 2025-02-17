@@ -1,6 +1,6 @@
 /* static/style.css */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Quicksand', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f4f4;
     color: #333;
     display: flex;
@@ -26,15 +26,37 @@ body {
 }
 
 h1, h2, .mission-statement h2 {
-    font-family: 'Shrikhand', cursive;
+    font-family: 'Quicksand', cursive;
     color: #a50a50;
-    font-size: 2.5em;
-    margin-bottom: 30px;
+    font-size: 4.5em;
+    margin-bottom: 10px;
     font-weight: 600;
 }
+h1 {
+	font-family: 'Shrikhand', cursive;
+}	
 h2{
-    font-size: 1.8em;
+    font-size: 1.5em;
     margin-bottom: 30px;
+}
+
+.admin-stats {
+    border: 2px solid #ddd;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.admin-stats h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #a50a50;
+}
+
+.admin-stats p {
+    font-size: 1.1em;
+    margin-bottom: 8px;
 }
 
 .buttons {
@@ -46,7 +68,7 @@ h2{
 
 .button {
     background-color: #a50a50;
-    font-family: 'Shrikhand', cursive;
+    font-family: 'Quicksand', cursive;
     color: white;
     padding: 18px 36px;
     border: none;
@@ -56,6 +78,16 @@ h2{
     transition: background-color 0.3s ease, transform 0.2s ease;
     text-decoration: none;
     display: inline-block;
+}
+
+.page-button {
+	font-size: 1em;
+    color: #333;
+}	
+
+.page-button:hover, .page-button:focus {
+    background-color: #ddd;
+    color: #a50a50;
 }
 
 .button:hover, .button:focus {
@@ -88,23 +120,36 @@ h2{
     color: #a50a50;
 }
 
+.narrow-input {
+    width: auto;
+    max-width: 300px;
+}
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="tel"]{ 
+	font-family: 'Quicksand', cursive;
     width: calc(100% - 40px);
-    padding: 15px;
+    padding: 15px; 
     margin-bottom: 20px;
     border: 2px solid #ddd;
     border-radius: 8px;
     font-size: 1em;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
+    height: 45px;
+}
+
+input[type="tel"]{
+	font-size: 1.5em;
+	text-align: center;
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="tel"]:focus { 
     border-color: #a50a50;
     outline: none;
 }
@@ -207,13 +252,13 @@ table, th, td {
 }
 
 th, td {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Keep body font */
+  font-family: 'Quicksand', Tahoma, Geneva, Verdana, sans-serif; /* Keep body font */
     padding: 12px;
     text-align: left;
 }
 
 th {
-    font-family: 'Shrikhand', cursive; /* Apply to table headers*/
+    font-family: 'Quicksand', cursive; /* Apply to table headers*/
     background-color: #a50a50;
     color: white;
 }
@@ -233,7 +278,7 @@ th {
 }
 
 .mission-statement p {
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /*keep body font*/
+     font-family: 'Quicksand', Tahoma, Geneva, Verdana, sans-serif; /*keep body font*/
     font-size: 1.1em;
     line-height: 1.6;
     color: #555;

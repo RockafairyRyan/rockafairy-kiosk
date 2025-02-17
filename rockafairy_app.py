@@ -144,7 +144,7 @@ def home():
 
     if not member_name:
         return redirect(url_for('index'))
-
+    first_name = member_name.split()[0]
     db = get_db()
     cur = db.cursor()
     cur.execute("SELECT * FROM members WHERE name = ?", (member_name,))
@@ -153,7 +153,7 @@ def home():
 
     is_admin = member_phone in ADMIN_PHONES
 
-    return render_template('home.html', member=member, gems_earned=gems_earned, is_admin=is_admin)
+    return render_template('home.html', member=member, gems_earned=gems_earned, is_admin=is_admin, first_name=first_name)
 
 
 @app.route('/admin_login', methods=['GET', 'POST'])
@@ -177,15 +177,51 @@ def admin_dashboard():
     cur = db.cursor()
     cur.execute("SELECT * FROM members")
     members = cur.fetchall()
+
+    # --- Pagination Logic ---
+    page = request.args.get('page', 1, type=int)  # Get page number from query parameters
+    per_page = 10  # Number of sign-ins per page
+    offset = (page - 1) * per_page
+
+    # Get total count of sign-ins (for calculating total pages)
+    cur.execute("SELECT COUNT(*) FROM signins")
+    total_signins = cur.fetchone()[0]
+    total_pages = (total_signins + per_page - 1) // per_page  # Integer division
+
+    # Get sign-ins for the current page
     cur.execute("""
         SELECT signins.timestamp, members.name
         FROM signins
         INNER JOIN members ON signins.member_id = members.id
         ORDER BY signins.timestamp DESC
-    """)
+        LIMIT ? OFFSET ?
+    """, (per_page, offset))
     signins = cur.fetchall()
+
+    # --- Calculate Statistics ---
+    today = datetime.date.today()
+    one_month_ago = today - datetime.timedelta(days=30)
+    one_day_ago = today - datetime.timedelta(days=1)
+
+    # New Members in Last Month
+    cur.execute("SELECT COUNT(*) FROM members WHERE signup_date >= ?", (one_month_ago.isoformat(),))  # Assuming you have a signup_date
+    new_members_last_month = cur.fetchone()[0]
+
+    # Sign-Ins in Last Month
+    cur.execute("SELECT COUNT(*) FROM signins WHERE timestamp >= ?", (one_month_ago.isoformat(),))
+    signins_last_month = cur.fetchone()[0]
+
+    # Sign-Ins in Last 24 Hours
+    cur.execute("SELECT COUNT(*) FROM signins WHERE timestamp >= ?", (one_day_ago.isoformat(),))
+    signins_last_24_hours = cur.fetchone()[0]
+
+
     db.close()
-    return render_template('admin_dashboard.html', members=members, signins=signins)
+    return render_template('admin_dashboard.html', members=members, signins=signins,
+                           page=page, total_pages=total_pages,
+                           new_members_last_month=new_members_last_month,  # Pass stats
+                           signins_last_month=signins_last_month,
+                           signins_last_24_hours=signins_last_24_hours)
 
 @app.route('/edit_gems/<int:member_id>', methods=['GET', 'POST'])  # New route
 def edit_gems(member_id):

@@ -1,6 +1,6 @@
 -- schema.sql
 DROP TABLE IF EXISTS members;
-DROP TABLE IF EXISTS signins; -- Drop if it exists (for development)
+DROP TABLE IF EXISTS signins;
 
 CREATE TABLE members (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -11,12 +11,13 @@ CREATE TABLE members (
     sms_opt_in BOOLEAN DEFAULT FALSE,
     last_login TEXT,
     streak INTEGER DEFAULT 0,
-    gems INTEGER DEFAULT 0
+    gems INTEGER DEFAULT 0,
+    signup_date TEXT DEFAULT (date('now'))
 );
 
 CREATE TABLE signins (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     member_id INTEGER NOT NULL,
-    timestamp TEXT NOT NULL,  -- ISO 8601 format: YYYY-MM-DD HH:MM:SS
+    timestamp TEXT NOT NULL,
     FOREIGN KEY (member_id) REFERENCES members(id)
 );
